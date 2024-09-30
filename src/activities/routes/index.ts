@@ -1,5 +1,4 @@
 import HttpStatus from 'http-status-codes';
-import eventsRoutes from './events';
 import fetchActivities from '../controllers/fetch';
 import fetchOneActivity from '../controllers/fetchOne';
 import createActivity from '../controllers/create';
@@ -107,6 +106,4 @@ export default app => {
       return res.status(code).send(response);
     },
   );
-
-  eventsRoutes(app);
 };

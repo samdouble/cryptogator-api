@@ -5,7 +5,6 @@ import bcrypt from 'bcrypt';
 import validationSchema from './validation';
 import User from '../schemas/User';
 import { ExpressRouteError } from '../../utils/ExpressRouteError';
-import { createCustomer } from '../../utils/stripe/customers';
 
 const schema = Joi.object().keys({
   censoredWords: validationSchema.censoredWords,
@@ -31,30 +30,14 @@ export default async userInfo => {
 
   const password = bcrypt.hashSync(validatedUser.password, 10);
 
-  const stripeCustomer = await createCustomer({
-    email: validatedUser.emailAddress,
-    name: validatedUser.name,
-  });
   return new User({
       ...validatedUser,
       createdAt: DateTime.now().toUTC().toJSDate(),
       modifiedAt: DateTime.now().toUTC().toJSDate(),
       password,
-      stripeCustomer,
     })
     .save()
     .then(user => {
-      /*
-      sendmail({
-        from: 'no-reply@fikas.io',
-        to: validatedUser.emailAddress,
-        subject: 'Welcome to fikas.io',
-        html: `Bonjour ${validatedUser.name}`,
-      }, (err, reply) => {
-        // TODO gérer erreur
-        console.log('error', err);
-      });
-      */
       return user.json();
     });
 };

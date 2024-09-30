@@ -33,6 +33,7 @@ jobs:
           npm run audit
       - name: Test
         run: |
+          export JWT_SECRET=abcdefghijklmnopqrstuvwxyz
           export MONGO_URL=mongodb://127.0.0.1:27017/app
           npm run test-ci
       - name: Build

@@ -3,7 +3,6 @@ import HttpStatus from 'http-status-codes';
 import { DateTime } from 'luxon';
 import validationSchema from './validation';
 import Payment from '../schemas/Payment';
-import createEvent from '../../events/controllers/create';
 import { ExpressRouteError } from '../../utils/ExpressRouteError';
 
 const schema = Joi.object().keys({
@@ -26,12 +25,6 @@ export default async function (userId, paymentInfo, options: { session?: any } =
     .save({ session: options.session })
     .then(async payment => {
       const jsonPayment = payment.getPublicFields();
-      await createEvent(userId, {
-        type: 'PAYMENT',
-        eventType: 'CREATED',
-        paymentId: jsonPayment.id,
-        payment: jsonPayment,
-      }, options);
       return jsonPayment;
     });
 }

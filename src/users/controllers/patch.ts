@@ -4,7 +4,6 @@ import { DateTime } from 'luxon';
 import validationSchema from './validation';
 import User from '../schemas/User';
 import { ExpressRouteError } from '../../utils/ExpressRouteError';
-import { updateCustomer } from '../../utils/stripe/customers';
 
 const schema = Joi.object().keys({
   censoredWords: validationSchema.censoredWords,
@@ -44,26 +43,11 @@ export default async function (userId, userInfo, options: { session?: any } = {}
   if (!user) {
     throw new ExpressRouteError(HttpStatus.NOT_FOUND, 'The user does not exist');
   }
-  const jsonUser = user.toJSON();
 
-  let stripeCustomer: any = undefined;
-  if (
-    Object.keys(validatedUser).includes('emailAddress')
-    || Object.keys(validatedUser).includes('name')
-  ) {
-    stripeCustomer = await updateCustomer(
-      jsonUser.stripeCustomer.id,
-      {
-        email: validatedUser.emailAddress || user.emailAddress,
-        name: validatedUser.name || user.name,
-      },
-    );
-  }
   return user
     .set({
       ...validatedUser,
       modifiedAt: DateTime.now().toUTC().toJSDate(),
-      ...(stripeCustomer ? { stripeCustomer } : {}),
     })
     .save({ session: options.session })
     .then(async u => u.json());

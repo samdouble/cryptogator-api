@@ -4,8 +4,6 @@ import { DateTime } from 'luxon';
 import { diff, detailedDiff } from 'deep-object-diff';
 import Activity from '../schemas/Activity';
 import { IActivityField } from '../schemas/Activity';
-import createEvent from '../../events/controllers/create';
-import fetchOneTemplate from '../../templates/controllers/fetchOne';
 import validationSchema from './validation';
 import { ExpressRouteError } from '../../utils/ExpressRouteError';
 
@@ -35,24 +33,7 @@ export default async function (userId, id, activityInfo, options: { session?: an
     throw new ExpressRouteError(HttpStatus.NOT_FOUND, 'Activity not found');
   }
 
-  const jsonOldActivity = activityDocument.getPublicFields();
-
   const newValues: IActivityField[] = [];
-  if (validatedActivity.templateId) {
-    await fetchOneTemplate(userId, validatedActivity.templateId, options)
-      .then(template => {
-        validatedActivity.values.forEach(value => {
-          const field = template.fields?.find(f => f.id === value.fieldId);
-          if (field) {
-            newValues.push({
-              ...value,
-              fieldName: field.name,
-            });
-          }
-        });
-      })
-      .catch(error => { throw error; })
-  }
 
   return activityDocument
     .set({
@@ -63,15 +44,6 @@ export default async function (userId, id, activityInfo, options: { session?: an
     .save({ session: options.session })
     .then(async activity => {
       const jsonActivity = activity.getPublicFields();
-      await createEvent(userId, {
-        type: 'ACTIVITY',
-        eventType: 'UPDATED',
-        activityId: jsonActivity.id,
-        activity: jsonActivity,
-        oldActivity: jsonOldActivity,
-        diff: diff(jsonOldActivity, jsonActivity),
-        detailedDiff: detailedDiff(jsonOldActivity, jsonActivity),
-      }, options);
       return jsonActivity;
     });
 }

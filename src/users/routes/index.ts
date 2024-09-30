@@ -1,6 +1,5 @@
 import HttpStatus from 'http-status-codes';
 import patchUser from '../controllers/patch';
-import cardsRoutes from './cards';
 import passport from '../../passport';
 import { executeIfAuthorized } from '../../login/utils';
 
@@ -20,6 +19,4 @@ export default app => {
       return res.status(code).send(response);
     },
   );
-
-  cardsRoutes(app);
 };
