@@ -38,7 +38,6 @@
     "nock": "^13.4.0",
     "npm": "^10.8.2",
     "passport": "^0.6.0",
-    "passport-google-oauth20": "^2.0.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

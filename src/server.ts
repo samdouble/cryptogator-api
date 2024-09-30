@@ -36,7 +36,7 @@ app.use(cors({
   credentials: true,
   methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
   origin: (process.env.NODE_ENV === 'production')
-    ? [/fikas\.io/, /\.fikas\.io$/, /google\.com/, /\.google\.com$/]
+    ? [/cryptogator\.com/, /\.cryptogator\.com$/]
     : [/localhost/],
   preflightContinue: false,
 }));

@@ -1,13 +1,9 @@
 import bcrypt from 'bcrypt';
 import passport from 'passport';
 import passportBearer from 'passport-http-bearer';
-import passportGoogleAuth from 'passport-google-oauth20';
 import passportJwt from 'passport-jwt';
 import passportLocal from 'passport-local';
 import fetchOneUser from './users/controllers/fetchOne';
-
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 const cookieExtractor = req => {
   let token = null;
@@ -55,22 +51,6 @@ passport.use(new BearerStrategy(
     });
   }
 ));
-
-const GoogleStrategy = passportGoogleAuth.Strategy;
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: GOOGLE_CLIENT_ID,
-      clientSecret: GOOGLE_CLIENT_SECRET,
-      //callbackURL: '/v1/auth/google/callback',
-      callbackURL: 'https://app.fikas.io/home',
-    },
-    function (accessToken, refreshToken, profile, done) {
-      console.log(accessToken, refreshToken, profile);
-      return done(null, profile);
-    },
-  ),
-);
 
 const JwtStrategy = passportJwt.Strategy;
 passport.use(

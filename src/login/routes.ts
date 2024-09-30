@@ -36,44 +36,6 @@ export default app => {
     },
   );
 
-  app.get(
-    '/v1/auth/google', 
-    passport.authenticate('google', { scope : ['profile', 'email'] }),
-    async (req, res) => {
-      console.log(req.body);
-      /*
-      const newToken = encrypt(req.user.id);
-      res.cookie('token', newToken, cookieOpts);
-      */
-      return res
-        .status(HttpStatus.OK)
-        .send({
-          user: req.user,
-        });
-    },
-    async (req, res) => {
-      res.clearCookie('token', cookieOpts);
-      return res
-        .status(HttpStatus.UNAUTHORIZED)
-        .send({
-          error: 'Not logged in',
-        });
-    },
-  );
-
-  app.get(
-    '/v1/auth/google/callback', 
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    async (req, res) => {
-      console.log('CALLBACK', req.body);
-      /*
-      const newToken = encrypt(req.user.id);
-      res.cookie('token', newToken, cookieOpts);
-      */
-      res.redirect('/');
-    },
-  );
-
   app.post(
     '/v1/logout',
     async (req, res) => {
