@@ -1,0 +1,89 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "env": {
+    "mocha": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "arrow-parens": [
+      "error",
+      "as-needed"
+    ],
+    "eol-last": [
+      "error",
+      "always"
+    ],
+    "func-names": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "comments": 120,
+        "ignoreRegExpLiterals": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreUrls": true
+      }
+    ],
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "info"
+        ]
+      }
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1
+      }
+    ],
+    "no-restricted-syntax": [
+      "error",
+      "LabeledStatement",
+      "WithStatement"
+    ],
+    "object-curly-newline": [
+      "error",
+      {
+        "consistent": true,
+        "minProperties": 5,
+        "multiline": true
+      }
+    ],
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/no-var-requires": 0,
+
+
+
+
+
+
+    "no-await-in-loop": "warn",
+    "class-methods-use-this": "warn",
+    "consistent-return": "warn",
+    "max-classes-per-file": "warn",
+    "no-async-promise-executor": "warn",
+    "no-cond-assign": "warn",
+    "no-empty-function": "warn",
+    "no-shadow": "warn",
+    "no-undef": "warn",
+    "no-use-before-define": "warn",
+    "no-useless-constructor": "warn",
+    "nonblock-statement-body-position": [
+      "error",
+      "below"
+    ],
+    "prefer-template": "warn"
+  }
+}

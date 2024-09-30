@@ -1,0 +1,101 @@
+version: "2"
+
+services:
+    server:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        container_name: app-server
+        restart: always
+        env_file: .env
+        links:
+            - mongo0
+            - mongo1
+            - mongo2
+        ports:
+            - 8000:8000
+        networks:
+            - dbnetwork
+        volumes:
+            - ./server:/api
+            - ./server/node_modules:/api/node_modules
+
+    server-test:
+        build:
+            context: .
+            dockerfile: Dockerfile.test
+        container_name: app-server-test
+        restart: always
+        links:
+            - mongo0
+            - mongo1
+            - mongo2
+        networks:
+            - dbnetwork
+        volumes:
+            - ./server:/api
+            - ./server/node_modules:/api/node_modules
+
+    mongodb-init:
+        build: ./db
+        links:
+            - mongo0
+            - mongo1
+            - mongo2
+        networks:
+            - dbnetwork
+        logging:
+            driver: none
+
+    mongo0:
+        volumes:
+            - ./volume-database:/data/db
+        hostname: mongo0
+        container_name: mongo0
+        image: mongo:7.0.5
+        ports:
+            - 27017:27017
+        expose:
+            - 27017
+        restart: always
+        entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+        environment:
+            - MONGO_INITDB_DATABASE=RD
+        networks:
+            - dbnetwork
+        logging:
+            driver: none
+
+    mongo1:
+        hostname: mongo1
+        container_name: mongo1
+        image: mongo:7.0.5
+        ports:
+            - 27018:27017
+        expose:
+            - 27018
+        restart: always
+        entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+        networks:
+            - dbnetwork
+        logging:
+            driver: none
+
+    mongo2:
+        hostname: mongo2
+        container_name: mongo2
+        image: mongo:7.0.5
+        ports:
+            - 27019:27017
+        expose:
+            - 27019
+        restart: always
+        entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+        networks:
+            - dbnetwork
+        logging:
+            driver: none
+
+networks:
+    dbnetwork:
+        driver: bridge
