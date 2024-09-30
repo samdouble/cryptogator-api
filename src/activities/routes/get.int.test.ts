@@ -54,6 +54,7 @@ describe('Activities', () => {
       const { status, body } = await chai.request(server)
         .get('/v1/activities')
         .set('Cookie', userToken!);
+      console.info(body);
       expect(status).to.equal(200);
       expect(body).to.have.property('activities');
       expect(body.activities).to.be.an('array');
