@@ -30,7 +30,8 @@ describe('Activities', () => {
       return body.activity;
     };
 
-    before(async function () {
+    beforeEach(async function () {
+      await emptyCollection('users');
       [userToken, user2Token] = await Promise.all([
         createUserToken({ name: 'user' }),
         createUserToken({ name: 'user2' }),
