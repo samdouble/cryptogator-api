@@ -12,7 +12,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  publish:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
