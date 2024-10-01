@@ -16,6 +16,7 @@ jobs:
         env:
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
           DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+        working-directory: '.'
         run: |
           export APP_NAME=cryptogator-api
           export IMAGE_NAME=samdouble/$APP_NAME
