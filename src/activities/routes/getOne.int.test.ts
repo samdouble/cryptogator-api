@@ -24,6 +24,7 @@ describe('Activities', () => {
         .post('/v1/activities')
         .set('Cookie', token)
         .send(jsonActivity);
+      console.info(body);
       if (!ok) {
         throw new Error();
       }
