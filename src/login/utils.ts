@@ -71,7 +71,6 @@ export async function executeIfAuthorized(operation) {
     session.endSession();
     return result;
   } catch (error) {
-    console.info(error);
     await session.abortTransaction();
     session.endSession();
     if (error instanceof ExpressRouteError) {

@@ -21,6 +21,7 @@ const schema = Joi.object().keys({
 export default async (userId, activityInfo, options: { session?: any } = {}) => {
   const validation = schema.validate(activityInfo, { stripUnknown: true });
   if (validation.error) {
+    console.info(validation.error);
     throw new ExpressRouteError(HttpStatus.BAD_REQUEST, 'Invalid form data');
   }
   const validatedActivity = validation.value;
