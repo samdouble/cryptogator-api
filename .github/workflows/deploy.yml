@@ -24,4 +24,4 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/cryptogator-api:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/cryptogator-api:${{ steps.vars.outputs.tag }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/cryptogator-api:${{ github.ref_name }}
