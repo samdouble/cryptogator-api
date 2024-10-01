@@ -8,7 +8,6 @@ import rateLimit from "express-rate-limit";
 import mongoConnect from './db';
 import passport from './passport';
 import routes from './routes';
-import { initIoSocket } from './utils/socket';
 
 const DEFAULT_HTTP_PORT = 8000;
 
@@ -52,6 +51,5 @@ const server = http.createServer(app);
 server.listen({ port }, () => {
   console.log(`Server listening on port ${port}`);
   mongoConnect(process.env.MONGO_URL);
-  initIoSocket(server);
   routes(app);
 });

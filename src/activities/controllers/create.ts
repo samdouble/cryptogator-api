@@ -5,7 +5,6 @@ import validationSchema from './validation';
 import Activity from '../schemas/Activity';
 import { IActivityField } from '../schemas/Activity';
 import { ExpressRouteError } from '../../utils/ExpressRouteError';
-import { emitToAll } from '../../utils/socket';
 
 const schema = Joi.object().keys({
   comments: validationSchema.comments,
@@ -21,7 +20,6 @@ const schema = Joi.object().keys({
 export default async (userId, activityInfo, options: { session?: any } = {}) => {
   const validation = schema.validate(activityInfo, { stripUnknown: true });
   if (validation.error) {
-    console.info(validation.error);
     throw new ExpressRouteError(HttpStatus.BAD_REQUEST, 'Invalid form data');
   }
   const validatedActivity = validation.value;
@@ -38,12 +36,6 @@ export default async (userId, activityInfo, options: { session?: any } = {}) => 
     .save({ session: options.session })
     .then(async activity => {
       const jsonActivity = activity.getPublicFields();
-      // TODO only broadcast to User who made the request
-      emitToAll({
-        type: 'ACTIVITY',
-        eventType: 'CREATED',
-        activity: jsonActivity,
-      });
       return jsonActivity;
     });
 };
