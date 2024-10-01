@@ -13,12 +13,11 @@ export default app => {
     '/v1/activities',
     passport.authenticate(['bearer', 'jwt_general'], { failWithError: true, session: false }),
     async (req, res) => {
-      const { query } = req;
       const { code, response } = await executeIfAuthorized(
         async ({ session }) => ({
           code: HttpStatus.OK,
           response: {
-            activities: await fetchActivities(req.user.id, query, { session }),
+            activities: await fetchActivities(req.user.id, { session }),
           },
         }));
       return res.status(code).send(response);
