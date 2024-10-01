@@ -1,0 +1,50 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.9.0'
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.11.0
+        with:
+          mongodb-version: '8.0'
+          mongodb-replica-set: rs0
+      - name: Install
+        run: |
+          npm install
+      - name: Lint
+        run: |
+          npm run lint
+      - name: Audit
+        run: |
+          npm run audit
+      - name: Test
+        run: |
+          export JWT_SECRET=abcdefghijklmnopqrstuvwxyz
+          export MONGO_URL=mongodb://127.0.0.1:27017/app
+          npm run test-ci
+      - name: Build
+        run: |
+          npm run build
+      - name: Build Docker image
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          export APP_NAME=cryptogator-api
+          export IMAGE_NAME=registry.digitalocean.com/samdouble/$APP_NAME
+          docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:1.0.0 -f Dockerfile.prod .
+          docker login -u $DIGITALOCEAN_API_TOKEN -p $DIGITALOCEAN_API_TOKEN registry.digitalocean.com
+          docker push $IMAGE_NAME --all-tags

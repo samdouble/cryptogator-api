@@ -1,0 +1,29 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Cryptogator",
+    "description": "The server for the cryptogator.com web application",
+    "termsOfService": "TODO",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [{
+    "url": "https://api.cryptogator.com/v1",
+    "description": "Production server",
+    "variables": {
+      "port": {
+        "enum": [
+          "8443"
+        ]
+      }
+    }
+  }],
+  "paths": "TODO",
+  "components": "TODO",
+  "security": "TODO",
+  "tags": "TODO",
+  "externalDocs": "TODO"
+}
