@@ -8,5 +8,6 @@ Just push on any branch and CircleCI will deploy on DOCR.
 
 | Name              | Required  | Default  |   |   |
 |-------------------|-----------|----------|---|---|
+| JWT_SECRET        | Yes       |          |   |   |
 | MONGO_URL         | Yes       |          |   |   |
 | NODE_ENV          | Yes       |          |   |   |
